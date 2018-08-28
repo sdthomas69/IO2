@@ -1,0 +1,1 @@
+<g:set var="link" 	value="${createLink(		controller: attrs?.controller, 		action: attrs?.action, 		params: ['selectedTag' : entry.key.replaceAll(' ', '_')]	)}" /><li class="latest-news-item tag">	<a href="${link}" class="tag-heading">		${entry.key}	</a></li>

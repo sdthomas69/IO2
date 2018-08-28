@@ -1,0 +1,166 @@
+---
+grails:
+    cors:
+      enabled: true
+    profile: web
+    codegen:
+        defaultPackage: io2
+    spring:
+        transactionManagement:
+            proxies: false
+    gorm:
+        # Whether to autowire entities. 
+        # Disabled by default for performance reasons.
+        autowire: false
+        reactor:
+            # Whether to translate GORM events into Reactor events
+            # Disabled by default for performance reasons
+            events: false
+    transaction:
+        chainedTransactionManager:
+          enabled: true
+          blacklistPattern: '.*'
+
+info:
+    app:
+        name: '@info.app.name@'
+        version: '@info.app.version@'
+        grailsVersion: '@info.app.grailsVersion@'
+spring:
+    main:
+        banner-mode: "off"
+    groovy:
+        template:
+            check-template-location: false
+
+# Spring Actuator Endpoints are Disabled by Default
+endpoints:
+    enabled: false
+    jmx:
+        enabled: true
+
+---
+grails:
+    mime:
+        disable:
+            accept:
+                header:
+                    userAgents:
+                        - Gecko
+                        - WebKit
+                        - Presto
+                        - Trident
+        types:
+            all: '*/*'
+            atom: application/atom+xml
+            css: text/css
+            csv: text/csv
+            form: application/x-www-form-urlencoded
+            html:
+              - text/html
+              - application/xhtml+xml
+            js: text/javascript
+            json:
+              - application/json
+              - text/json
+            multipartForm: multipart/form-data
+            pdf: application/pdf
+            rss: application/rss+xml
+            text: text/plain
+            hal:
+              - application/hal+json
+              - application/hal+xml
+            xml:
+              - text/xml
+              - application/xml
+    urlmapping:
+        cache:
+            maxsize: 1000
+    controllers:
+        defaultScope: singleton
+        upload:
+                # 50 * 1024 * 1024
+                maxFileSize: 52428800
+                maxRequestSize: 52428800
+    converters:
+        encoding: UTF-8
+    views:
+        default:
+            codec: html
+        gsp:
+            encoding: UTF-8
+            htmlcodec: xml
+            codecs:
+                expression: html
+                scriptlets: html
+                taglib: none
+                staticparts: none
+endpoints:
+    jmx:
+        unique-names: true
+
+hibernate:
+    format_sql: true
+    cache:
+        queries: false
+        use_second_level_cache: true
+        use_query_cache: true
+        provider_class: net.sf.ehcache.hibernate.EhCacheProvider
+        region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+
+hibernate.enable_lazy_load_no_trans: true
+grails.resources.pattern: '/**'
+#grails.gsp.enable.reload: true
+
+dataSource:
+    pooled: true
+    jmxExport: true
+    driverClassName: org.postgresql.Driver
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+
+dataSources:
+    lookup:
+        pooled: true
+        jmxExport: true
+        driverClassName: org.postgresql.Driver
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        #transactional: true # add this line
+        #readOnly: true
+
+environments:
+    development:
+        grails:
+            serverURL: http://localhost:8080
+        dataSource:
+            dbCreate: update
+            logSql: true
+            username: user
+            password: wontwork
+            url: jdbc:postgresql://localhost:5432/io2
+
+        dataSources:
+            lookup:
+                dbCreate: update
+                logSql: true
+                username: publicUser
+                password: changeMe
+                url: jdbc:postgresql://localhost:5432/io2
+    test:
+        grails:
+            serverURL: http://localhost:8080
+        dataSource:
+            dbCreate: update
+            url: jdbc:postgresql://localhost:5432/io2
+
+    production:
+        grails:
+            serverURL: http://foo.com
+        dataSource:
+            dbCreate: update
+            jndiName: "java:comp/env/jdbc/io2"
+
+        dataSources:
+            lookup:
+                dbCreate: update
+                jndiName: "java:comp/env/jdbc/io2_public"
+---

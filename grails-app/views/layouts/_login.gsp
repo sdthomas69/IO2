@@ -1,0 +1,1 @@
+<shiro:authenticated>	<li class="normal">		<g:link controller="auth" action="signOut">(log out)</g:link>	</li>	<li class="normal">		<g:link class="home" action="login" controller="UserAdmin">Logged in as: <shiro:principal/></g:link>	</li></shiro:authenticated>

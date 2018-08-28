@@ -1,0 +1,1 @@
+<shiro:hasPermission permission="fileAdmin:edit:${file.id}">	<div class="buttons">		<g:form controller="fileAdmin" action="edit" method="get">			<input type="hidden" name="id" value="${file?.id}" />	        <g:actionSubmit class="w-button submit-button" value="Edit" />	    </g:form>	</div></shiro:hasPermission>
