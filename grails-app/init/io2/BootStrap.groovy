@@ -22,7 +22,7 @@ class BootStrap {
     void createAdminUserIfRequired() {
 
 
-        if(!Role.findByName("Administrator") && !User.findByUsername('admin')) {
+        if(!Role.findByName("Administrator") && !User.findByUsername('adminUser')) {
 
             println("Creating initial roles and admin user")
 
@@ -39,19 +39,18 @@ class BootStrap {
             println("The User role '${userRole}' has been created")
 
             User adminUser = new User(
-                    username:'admin',
+                    username:'adminUser',
                     firstName:'admin',
                     lastName:'admin',
                     email:'foo@bar.com',
                     name:'admin',
                     urlTitle:'admin_admin',
-                    password:'admin123@',
-                    //passwordHash: shiroSecurityService.encodePassword("admin123@"),
-                    confirm:'admin123@',
+                    password:'password',
+                    confirm:'password',
                     confirmed:true
             )
 
-            securityService.saltAndHashUser('admin123@', adminUser)
+            securityService.saltAndHashUser('password', adminUser)
 
             adminUser.save(flush:true, failOnError:true)
 
@@ -61,5 +60,3 @@ class BootStrap {
         }
     }
 }
-
-//GRANT SELECT ON ALL TABLES IN SCHEMA public TO io2_public;
