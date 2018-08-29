@@ -4,6 +4,7 @@ import org.apache.shiro.SecurityUtils
 import org.apache.shiro.crypto.RandomNumberGenerator
 import org.apache.shiro.crypto.SecureRandomNumberGenerator
 import org.apache.shiro.crypto.hash.Sha512Hash
+
 //import org.apache.shiro.authc.AuthenticationException
 //import org.springframework.beans.factory.annotation.Autowired
 //import org.springframework.beans.factory.annotation.Qualifier
@@ -64,7 +65,7 @@ class SecurityService {
 
         def permission = permissionQuery(object, objectId, user.id)
 
-        if(permission) {
+        if (permission) {
             permission.delete()
         }
     }
@@ -72,7 +73,7 @@ class SecurityService {
     @Transactional
     public void addPermission(permString, user) {
 
-        if(!permissionExists(permString, user)) {
+        if (!permissionExists(permString, user)) {
             def permission = new Permission(permissionsString: permString, user: user).save(flush: true)
         }
     }
@@ -81,7 +82,7 @@ class SecurityService {
 
         Permission exists = Permission.findByPermissionsStringAndUser(permString, user)
 
-        if(exists) return true
+        if (exists) return true
         else return false
     }
 
@@ -92,7 +93,7 @@ class SecurityService {
 
     def permissionQuery(object, objectId, userId) {
 
-        def query = Permission.withCriteria(uniqueResult:true) {
+        def query = Permission.withCriteria(uniqueResult: true) {
 
             ilike("permissionsString", "%:${objectId}")
             ilike("permissionsString", "${object}:%")
@@ -109,7 +110,7 @@ class SecurityService {
 
         User oldAuthor = User.get(oldAuthorId)
 
-        if(newAuthor && oldAuthor && newAuthor.id != oldAuthor.id) {
+        if (newAuthor && oldAuthor && newAuthor.id != oldAuthor.id) {
 
             // add a new permission if needed
 
@@ -117,7 +118,7 @@ class SecurityService {
 
             def permission = findPermission(action, objectId, newAuthor.id)
 
-            if(!permission) {
+            if (!permission) {
 
                 addPermission("${action}:*:${objectId}", newAuthor)
 
@@ -125,7 +126,7 @@ class SecurityService {
 
                 def oldPermission = findPermission(action, objectId, oldAuthor.id)
 
-                if(oldPermission) removePermission(action, objectId, oldAuthor)
+                if (oldPermission) removePermission(action, objectId, oldAuthor)
             }
         }
     }

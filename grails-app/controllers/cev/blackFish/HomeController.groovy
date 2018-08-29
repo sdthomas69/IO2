@@ -3,97 +3,97 @@ package cev.blackFish
 import groovy.json.JsonBuilder
 
 class HomeController extends BaseController {
-	
-	def homeService
-	def restService
+
+    def homeService
+    def restService
 
     /**
-     * 
+     *
      * @return
      */
-	def index() { 
-        
+    def index() {
+
         def stories = homeService.homeStories(5, "slideshow")
-		
-		def features = homeService.homeStories(3, "featured")
-		
-		Story homeStory = homeService.getStoryByTitle("Home")
-		
-		render(
-			view:"/home/index",
-			model:[
-				stories: stories, 
-				features: features, 
-				homeStory: homeStory
-			]
-		)
+
+        def features = homeService.homeStories(3, "featured")
+
+        Story homeStory = homeService.getStoryByTitle("Home")
+
+        render(
+                view: "/home/index",
+                model: [
+                        stories  : stories,
+                        features : features,
+                        homeStory: homeStory
+                ]
+        )
     }
-	
-	def map() {
 
-	}
+    def map() {
 
-	private String serviceURL = "https://ooinet.oceanobservatories.org/api/uframe/status/"
+    }
 
-	def getSite() {
-		def data = restService.getURL("${serviceURL}sites/RS")
-		render data.json
-	}
+    private String serviceURL = "https://ooinet.oceanobservatories.org/api/uframe/status/"
 
-	def getPlatform() {
+    def getSite() {
+        def data = restService.getURL("${serviceURL}sites/RS")
+        render data.json
+    }
 
-		String platform = params.platform ?: "RS03AXPD"
+    def getPlatform() {
 
-		def data = restService.getURL("${serviceURL}platforms/${platform}")
+        String platform = params.platform ?: "RS03AXPD"
 
-		render data.json
-	}
+        def data = restService.getURL("${serviceURL}platforms/${platform}")
 
-	/**
-	 *
-	 *
-	 * @return
-	 */
-	private stringBuildJson(List stories) {
+        render data.json
+    }
 
-		def json = StringBuilder.newInstance()
+    /**
+     *
+     *
+     * @return
+     */
+    private stringBuildJson(List stories) {
 
-		json << '{ "type": "FeatureCollection", "features": ['
+        def json = StringBuilder.newInstance()
 
-		stories.eachWithIndex { story, index ->
+        json << '{ "type": "FeatureCollection", "features": ['
 
-			json << buildJson(story)
+        stories.eachWithIndex { story, index ->
 
-			if(index + 1 < stories.size()) json << ","
-		}
-		json << "]}"
+            json << buildJson(story)
 
-		return json.toString()
-	}
+            if (index + 1 < stories.size()) json << ","
+        }
+        json << "]}"
 
-	/**
-	 *
-	 *
-	 * @return
-	 */
-	private buildJson(Story story) {
+        return json.toString()
+    }
 
-		def jb = new JsonBuilder()
+    /**
+     *
+     *
+     * @return
+     */
+    private buildJson(Story story) {
 
-		String href = blackFish.setLink("object": story, "name": "story")
+        def jb = new JsonBuilder()
 
-		String link = "<a href='${href}'>${story.pageTitle}</a>"
+        String href = blackFish.setLink("object": story, "name": "story")
 
-		Map feature = jb {
-			type "Feature"
-			geometry {
-				type "Point"
-				coordinates([story.longitude, story.latitude])
-			}
-			properties {
-				title(link)
-			}
-		}
-		jb.toString()
-	}
+        String link = "<a href='${href}'>${story.pageTitle}</a>"
+
+        Map feature = jb {
+            type "Feature"
+            geometry {
+                type "Point"
+                coordinates([story.longitude, story.latitude])
+            }
+            properties {
+                title(link)
+            }
+        }
+        jb.toString()
+    }
 }

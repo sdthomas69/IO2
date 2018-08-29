@@ -63,7 +63,7 @@ class ShiroDbRealm {
         //User user = userService.findByUsername(principal)
         User user = userService.findByUsernameAndConfirmed(principal)
 
-        if(!user) {
+        if (!user) {
             return false
         }
 
@@ -81,7 +81,7 @@ class ShiroDbRealm {
         //User user = userService.findByUsername(principal)
         User user = userService.findByUsernameAndConfirmed(principal)
 
-        if(!user) {
+        if (!user) {
             return false
         }
 
@@ -101,7 +101,7 @@ class ShiroDbRealm {
         //User user = userService.findByUsername(principal)
         User user = userService.findByUsernameAndConfirmed(principal)
 
-        if(!user) {
+        if (!user) {
             return false
         }
 
@@ -129,8 +129,7 @@ class ShiroDbRealm {
             if (perm.implies(requiredPermission)) {
                 // User has the permission!
                 return true
-            }
-            else {
+            } else {
                 return false
             }
         }

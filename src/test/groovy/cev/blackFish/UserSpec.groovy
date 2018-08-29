@@ -16,7 +16,7 @@ class UserSpec extends Specification {
 
     def char255 = "LoremipsumdolorsitametconsecteturadipiscingelitSedmolestieinmagnaneclaoreetAliquamidliberoineximperdietpellentesqueutvitaeaugueProingravidalobortisultriciesPrinimperdietiaculislacusegettempornequevolutpateuismodProinsedmollismassaacbibendumrisusSedac@gmail.com"
 
-    void "test that the username constraint is valid"(){
+    void "test that the username constraint is valid"() {
 
         when: "the username is a valid string"
 
@@ -27,12 +27,12 @@ class UserSpec extends Specification {
                 passwordHash: "hash",
                 passwordSalt: "salt",
                 urlTitle: "title",
-                confirmed:false,
+                confirmed: false,
                 hasPrimaryImage: false,
                 view: true
         )
 
-        user.save(flush:true)
+        user.save(flush: true)
 
         then: "validation should pass"
 
@@ -50,7 +50,7 @@ class UserSpec extends Specification {
                 passwordHash: "hash",
                 passwordSalt: "salt",
                 urlTitle: "title",
-                confirmed:false,
+                confirmed: false,
                 hasPrimaryImage: false,
                 view: true
         )
@@ -70,7 +70,7 @@ class UserSpec extends Specification {
                 passwordHash: "hash",
                 passwordSalt: "salt",
                 urlTitle: "title",
-                confirmed:false,
+                confirmed: false,
                 hasPrimaryImage: false,
                 view: true
         )
@@ -90,7 +90,7 @@ class UserSpec extends Specification {
                 passwordHash: "hash",
                 passwordSalt: "salt",
                 urlTitle: "title",
-                confirmed:false,
+                confirmed: false,
                 hasPrimaryImage: false,
                 view: true
         )

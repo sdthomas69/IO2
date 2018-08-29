@@ -7,7 +7,7 @@ import org.apache.shiro.authc.SimpleAccount
 import org.apache.shiro.authz.permission.WildcardPermission
 
 class ShiroNPWRealm {
-    
+
     /*static authTokenClass = cev.blackFish.UsernameToken
 
     def credentialMatcher

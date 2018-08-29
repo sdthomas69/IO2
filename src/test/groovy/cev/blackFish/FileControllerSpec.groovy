@@ -38,12 +38,12 @@ class FileControllerSpec extends Specification {
     def "test the title method with a valid title"() {
 
         File file = new File(
-                title:"test",
-                published:true
-        ).save(validate:false)
+                title: "test",
+                published: true
+        ).save(validate: false)
 
         secUtil.demand.static.getSubject { ->
-            [login: {authToken -> false}]
+            [login: { authToken -> false }]
         }
 
         when:
@@ -79,13 +79,13 @@ class FileControllerSpec extends Specification {
     def "test the show method with a valid id parameter"() {
 
         File file = new File(
-                title:"test",
-                published:true,
-                id:1
-        ).save(validate:false)
+                title: "test",
+                published: true,
+                id: 1
+        ).save(validate: false)
 
         secUtil.demand.static.getSubject { ->
-            [login: {authToken -> false}]
+            [login: { authToken -> false }]
         }
 
         when:
@@ -100,16 +100,16 @@ class FileControllerSpec extends Specification {
     def "test the pano method with a valid id parameter"() {
 
         File file = new File(
-                title:"test",
-                published:true,
-                filesDirectory:"test",
-                height:1,
-                width:1,
-                id:1
-        ).save(validate:false)
+                title: "test",
+                published: true,
+                filesDirectory: "test",
+                height: 1,
+                width: 1,
+                id: 1
+        ).save(validate: false)
 
         secUtil.demand.static.getSubject { ->
-            [login: {authToken -> false}]
+            [login: { authToken -> false }]
         }
 
         when:
@@ -134,13 +134,13 @@ class FileControllerSpec extends Specification {
     def "test the pano method with an unpublished file"() {
 
         File file = new File(
-                title:"test",
-                published:true,
-                id:1
-        ).save(validate:false)
+                title: "test",
+                published: true,
+                id: 1
+        ).save(validate: false)
 
         secUtil.demand.static.getSubject { ->
-            [login: {authToken -> false}]
+            [login: { authToken -> false }]
         }
 
         when:
@@ -155,7 +155,7 @@ class FileControllerSpec extends Specification {
 
     def "setView returns stream for a streaming file"() {
 
-        File file = new File(title:"test", stream:true)
+        File file = new File(title: "test", stream: true)
 
         when:
         controller.setView(file)
@@ -166,7 +166,7 @@ class FileControllerSpec extends Specification {
 
     def "setView returns the default view for a file"() {
 
-        File file = new File(title:"test")
+        File file = new File(title: "test")
 
         when:
         controller.setView(file)
@@ -177,7 +177,7 @@ class FileControllerSpec extends Specification {
 
     def "test renderFile with a published file"() {
 
-        File file = new File(title:"test", published:true)
+        File file = new File(title: "test", published: true)
 
         when:
         controller.renderFile(file)
@@ -191,10 +191,10 @@ class FileControllerSpec extends Specification {
     def "test renderFile with an unpublished story"() {
 
         secUtil.demand.static.getSubject { ->
-            [login: {authToken -> false}]
+            [login: { authToken -> false }]
         }
 
-        File file = new File(title:"test", urlTitle:"test", published:false)
+        File file = new File(title: "test", urlTitle: "test", published: false)
 
         when:
         controller.renderFile(file)

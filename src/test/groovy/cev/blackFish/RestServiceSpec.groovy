@@ -17,7 +17,7 @@ class RestServiceSpec extends Specification {
     }
 
     void "test something"() {
-        expect:"fix me"
-            true == false
+        expect: "fix me"
+        true == false
     }
 }

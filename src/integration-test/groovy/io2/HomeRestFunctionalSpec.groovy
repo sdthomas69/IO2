@@ -15,7 +15,7 @@ class HomeRestFunctionalSpec extends RestSpec {
 
     void "test json response"() {
 
-        when:"The service URL is accessed"
+        when: "The service URL is accessed"
         def response = rest.get("${baseUrl}/home/getSite") {
             accept('application/json')
         }

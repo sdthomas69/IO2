@@ -1,3 +1,3 @@
-<meta name="layout" content="mainCoe" />
+<meta name="layout" content="mainCoe"/>
 <title>${file}</title>
 

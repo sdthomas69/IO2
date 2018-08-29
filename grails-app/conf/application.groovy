@@ -1,4 +1,3 @@
-
 environments {
 
     production {
@@ -29,7 +28,6 @@ environments {
 }
 
 grails.scaffolding.templates.domainSuffix = 'Instance'
-
 
 //Additional items
 grails.gsp.enable.reload = true
@@ -68,7 +66,7 @@ maxFileSize = 1000 * 1024 * 100 //100 MB
 
 maxImageSize = 1000 * 1024 * 5 //50 MB
 
-streamURL = "stream.ocean.washington.edu:1935"
+streamURL = "foo.com:1935"
 
 flashURL = "rtmp://${streamURL}/rsn/mp4:"
 iPhoneURL = "http://${streamURL}/rsn/mp4:"
@@ -167,4 +165,4 @@ grails {
     }
 }
 
-grails.mail.default.from="mailer@000.000.00.00"
+grails.mail.default.from = "mailer@000.000.00.00"

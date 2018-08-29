@@ -3,7 +3,7 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher
 // Place your Spring DSL code here
 beans = {
 
-    credentialMatcher(org.apache.shiro.authc.credential.Sha512CredentialsMatcher){
+    credentialMatcher(org.apache.shiro.authc.credential.Sha512CredentialsMatcher) {
         storedCredentialsHexEncoded = false
         hashSalted = true
         hashIterations = 1024

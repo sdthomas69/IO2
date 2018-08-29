@@ -6,13 +6,13 @@ import grails.transaction.Transactional
 class MenuSetService {
 
     def getMenuSetByTitle(String title) {
-		
-		MenuSet menuSet = MenuSet.findByTitle(
-			title, 
-			[fetch:[children:"eager"], 
-				cache:true, 
-				readOnly:true
-			]
-		)
+
+        MenuSet menuSet = MenuSet.findByTitle(
+                title,
+                [fetch   : [children: "eager"],
+                 cache   : true,
+                 readOnly: true
+                ]
+        )
     }
 }

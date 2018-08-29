@@ -4,269 +4,265 @@ import org.springframework.dao.DataIntegrityViolationException
 import grails.core.GrailsApplication
 
 class PermissionController {
-    
+
     def securityService
-	def permissionService
-	GrailsApplication grailsApplication
+    def permissionService
+    GrailsApplication grailsApplication
 
-	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-	def updateUserPermissions() {
+    def updateUserPermissions() {
 
-		def permission = Permission.get(params.permissionId)
+        def permission = Permission.get(params.permissionId)
 
-		if(permission && params.permissionsString) {
-			permission.setPermissionsString(params.permissionsString)
-		}
+        if (permission && params.permissionsString) {
+            permission.setPermissionsString(params.permissionsString)
+        }
 
-		flash.message = "The permission has been updated"
+        flash.message = "The permission has been updated"
 
-		redirect(action:'edit', controller:'userAdmin', params:[id:params.id])
-	}
+        redirect(action: 'edit', controller: 'userAdmin', params: [id: params.id])
+    }
 
-	def getUserPermissions() {
+    def getUserPermissions() {
 
-		if(!params.id || !params.objectId || !params.object) render "a parameter is missing"
+        if (!params.id || !params.objectId || !params.object) render "a parameter is missing"
 
-		else {
+        else {
 
-			def permission = securityService.findPermission(params.object, params.objectId, params.id)
+            def permission = securityService.findPermission(params.object, params.objectId, params.id)
 
-			if(permission) render(template:'permission', model:[permission:permission, params:params])
+            if (permission) render(template: 'permission', model: [permission: permission, params: params])
 
-			else render "permission not found"
-		}
-	}
+            else render "permission not found"
+        }
+    }
 
-	def findPermissionsByObject(String objectName, String objectId) {
+    def findPermissionsByObject(String objectName, String objectId) {
 
-		if(!objectId || !objectName) {
+        if (!objectId || !objectName) {
 
-			flash.message = "A parameter was missing or malformed"
-			redirect(action:"list")
-			return
-		}
+            flash.message = "A parameter was missing or malformed"
+            redirect(action: "list")
+            return
+        }
 
-		def permissionInstanceList = permissionService.findPermissionsByObject(objectName, objectId)
+        def permissionInstanceList = permissionService.findPermissionsByObject(objectName, objectId)
 
-		render(
-			view: 'list',
-			model: [
-					permissionInstanceList: permissionInstanceList,
-					objectName: objectName,
-					objectId: objectId
-			]
-		)
-	}
+        render(
+                view: 'list',
+                model: [
+                        permissionInstanceList: permissionInstanceList,
+                        objectName            : objectName,
+                        objectId              : objectId
+                ]
+        )
+    }
 
-	def index() {
-		redirect(action: "list", params: params)
-	}
+    def index() {
+        redirect(action: "list", params: params)
+    }
 
-	def list() {
+    def list() {
 
-		params.max = Math.min(params.max ? params.int('max') : 10, 100)
-		[permissionInstanceList: Permission.list(params), permissionInstanceTotal: Permission.count()]
-	}
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [permissionInstanceList: Permission.list(params), permissionInstanceTotal: Permission.count()]
+    }
 
-	def create() {
+    def create() {
 
-		Permission permissionInstance = new Permission()
+        Permission permissionInstance = new Permission()
 
-		if(params.objectId && params.selectedController) {
+        if (params.objectId && params.selectedController) {
 
-			params.actions = "*"
+            params.actions = "*"
 
-			permissionInstance.permissionsString = buildPermissionsString(params)
-		}
-		else permissionInstance = new Permission(params)
+            permissionInstance.permissionsString = buildPermissionsString(params)
+        } else permissionInstance = new Permission(params)
 
-		[permissionInstance: permissionInstance, params:params]
-	}
+        [permissionInstance: permissionInstance, params: params]
+    }
 
-	def save() {
+    def save() {
 
-		def permissionInstance = new Permission(params)
+        def permissionInstance = new Permission(params)
 
-		permissionInstance.properties = params
+        permissionInstance.properties = params
 
-		if(params.actions && params.selectedController) {
+        if (params.actions && params.selectedController) {
 
-			permissionInstance.permissionsString = buildPermissionsString(params)
-		}
+            permissionInstance.permissionsString = buildPermissionsString(params)
+        }
 
-		if(!permissionInstance.save(flush: true)) {
-			render(view: "create", model: [permissionInstance: permissionInstance])
-			return
-		}
+        if (!permissionInstance.save(flush: true)) {
+            render(view: "create", model: [permissionInstance: permissionInstance])
+            return
+        }
 
-		flash.message = message(code: 'default.created.message', args: [message(code: 'permission.label', default: 'Permission'), permissionInstance.id])
-		redirect(action: "edit", id: permissionInstance.id)
-	}
+        flash.message = message(code: 'default.created.message', args: [message(code: 'permission.label', default: 'Permission'), permissionInstance.id])
+        redirect(action: "edit", id: permissionInstance.id)
+    }
 
-	def show() {
+    def show() {
 
-		def permissionInstance = Permission.get(params.id)
-		if (!permissionInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'permission.label', default: 'Permission'), params.id])
-			redirect(action: "list")
-			return
-		}
+        def permissionInstance = Permission.get(params.id)
+        if (!permissionInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'permission.label', default: 'Permission'), params.id])
+            redirect(action: "list")
+            return
+        }
+
+        [permissionInstance: permissionInstance]
+    }
 
-		[permissionInstance: permissionInstance]
-	}
+    def edit() {
 
-	def edit() {
+        def permissionInstance = Permission.get(params.id)
+        if (!permissionInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'permission.label', default: 'Permission'), params.id])
+            redirect(action: "list")
+            return
+        }
 
-		def permissionInstance = Permission.get(params.id)
-		if (!permissionInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'permission.label', default: 'Permission'), params.id])
-			redirect(action: "list")
-			return
-		}
+        [
+                permissionInstance: permissionInstance,
+                actions           : showActions(permissionInstance.controller())
+        ]
+    }
 
-		[
-			permissionInstance: permissionInstance,
-			actions:showActions(permissionInstance.controller())
-		]
-	}
+    def update() {
 
-	def update() {
+        def permissionInstance = Permission.get(params.id)
 
-		def permissionInstance = Permission.get(params.id)
+        if (!permissionInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'permission.label', default: 'Permission'), params.id])
+            redirect(action: "list")
+            return
+        }
 
-		if (!permissionInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'permission.label', default: 'Permission'), params.id])
-			redirect(action: "list")
-			return
-		}
+        if (params.version) {
+            def version = params.version.toLong()
+            if (permissionInstance.version > version) {
+                permissionInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [message(code: 'permission.label', default: 'Permission')] as Object[],
+                        "Another user has updated this Permission while you were editing")
 
-		if (params.version) {
-			def version = params.version.toLong()
-			if (permissionInstance.version > version) {
-				permissionInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-						[message(code: 'permission.label', default: 'Permission')] as Object[],
-						"Another user has updated this Permission while you were editing")
+                render(view: "edit", model: [permissionInstance: permissionInstance])
+                return
+            }
+        }
 
-				render(view: "edit", model: [permissionInstance: permissionInstance])
-				return
-			}
-		}
+        permissionInstance.properties = params
 
-		permissionInstance.properties = params
+        if (params.actions && params.selectedController) {
 
-		if (params.actions && params.selectedController) {
+            permissionInstance.permissionsString = ""
+            permissionInstance.permissionsString = buildPermissionsString(params)
+        }
 
-			permissionInstance.permissionsString = ""
-			permissionInstance.permissionsString = buildPermissionsString(params)
-		}
+        if (!permissionInstance.save(flush: true)) {
 
-		if (!permissionInstance.save(flush: true)) {
+            render(view: "edit", model: [permissionInstance: permissionInstance])
+            return
+        }
 
-			render(view: "edit", model: [permissionInstance: permissionInstance])
-			return
-		}
+        flash.message = "The permission has been updated"
 
-		flash.message = "The permission has been updated"
+        if (params.returnTo) {
 
-		if(params.returnTo) {
+            redirect(
+                    controller: permissionInstance.controller(),
+                    action: "edit",
+                    id: permissionInstance.controllerId()
+            )
+        } else redirect(action: "edit", id: permissionInstance.id)
+    }
 
-			redirect(
-					controller: permissionInstance.controller(),
-					action: "edit",
-					id: permissionInstance.controllerId()
-			)
-		}
+    def delete() {
 
-		else redirect(action: "edit", id: permissionInstance.id)
-	}
+        def permissionInstance = Permission.get(params.id)
+        if (!permissionInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'permission.label', default: 'Permission'), params.id])
+            redirect(action: "list")
+            return
+        }
 
-	def delete() {
+        try {
+            permissionInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'permission.label', default: 'Permission'), params.id])
+            redirect(action: "list")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'permission.label', default: 'Permission'), params.id])
+            redirect(action: "show", id: params.id)
+        }
+    }
 
-		def permissionInstance = Permission.get(params.id)
-		if (!permissionInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'permission.label', default: 'Permission'), params.id])
-			redirect(action: "list")
-			return
-		}
+    def showActions(String selectedController) {
 
-		try {
-			permissionInstance.delete(flush: true)
-			flash.message = message(code: 'default.deleted.message', args: [message(code: 'permission.label', default: 'Permission'), params.id])
-			redirect(action: "list")
-		}
-		catch (DataIntegrityViolationException e) {
-			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'permission.label', default: 'Permission'), params.id])
-			redirect(action: "show", id: params.id)
-		}
-	}
+        selectedController = selectedController.capitalize()
 
-	def showActions(String selectedController) {
+        def actions = null
 
-		selectedController = selectedController.capitalize()
+        def controller = grailsApplication.getArtefact("Controller", "cev.blackFish.${selectedController}Controller")
 
-		def actions = null
+        if (controller)
+            actions = controller.getActions().collect({ it }).unique().sort()
 
-		def controller = grailsApplication.getArtefact("Controller", "cev.blackFish.${selectedController}Controller")
+        return actions
+    }
 
-		if(controller)
-			actions = controller.getActions().collect({it}).unique().sort()
+    private buildPermissionsString(params) {
 
-		return actions
-	}
+        String tokenSep = ","
+        String levelSep = ":"
+        String wildcard = "*"
+        String objectId = setObjectId()
 
-	private buildPermissionsString(params) {
+        StringBuilder perms = new StringBuilder()
 
-		String tokenSep = ","
-		String levelSep = ":"
-		String wildcard = "*"
-		String objectId = setObjectId()
+        perms.append(params.selectedController)
+        perms.append(levelSep)
 
-		StringBuilder perms = new StringBuilder()
+        if (params.actions == wildcard) {
+            perms.append(wildcard)
+        } else {
 
-		perms.append(params.selectedController)
-		perms.append(levelSep)
+            def actions = params.list('actions')
 
-		if(params.actions == wildcard) {
-			perms.append(wildcard)
-		}
-		else {
+            int last = actions.size() - 1
 
-			def actions = params.list('actions')
+            actions.eachWithIndex { token, i ->
+                perms.append token
+                if (i != last) {
+                    perms.append tokenSep
+                }
+            }
+        }
+        perms.append(levelSep)
 
-			int last = actions.size() -1
+        if (params?.objectId) perms.append(params.objectId)
 
-			actions.eachWithIndex { token, i ->
-				perms.append token
-				if (i != last) {
-					perms.append tokenSep
-				}
-			}
-		}
-		perms.append(levelSep)
+        else if (objectId) perms.append(objectId)
 
-		if(params?.objectId) perms.append(params.objectId)
+        return perms.toString()
+    }
 
-		else if(objectId) perms.append(objectId)
+    private String setObjectId() {
 
-		return perms.toString()
-	}
+        String oid = ""
 
-	private String setObjectId() {
+        if (params.permissionsString) {
+            String ps = params.permissionsString
+            if (ps.lastIndexOf(":") != -1) {
+                oid = ps.substring(ps.lastIndexOf(":") + 1)
+            }
+        }
+        return oid
+    }
 
-		String oid = ""
+    private getActions(String actions) {
 
-		if(params.permissionsString) {
-			String ps = params.permissionsString
-			if(ps.lastIndexOf(":") != -1) {
-				oid = ps.substring(ps.lastIndexOf(":") + 1)
-			}
-		}
-		return oid
-	}
-
-	private getActions(String actions) {
-
-		return actions.lastIndexOf(":") != -1 ? actions.lastIndexOf(":") : actions
-	}
+        return actions.lastIndexOf(":") != -1 ? actions.lastIndexOf(":") : actions
+    }
 }

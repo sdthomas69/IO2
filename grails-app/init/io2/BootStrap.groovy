@@ -22,13 +22,13 @@ class BootStrap {
     void createAdminUserIfRequired() {
 
 
-        if(!Role.findByName("Administrator") && !User.findByUsername('adminUser')) {
+        if (!Role.findByName("Administrator") && !User.findByUsername('adminUser')) {
 
             println("Creating initial roles and admin user")
 
             Role adminRole = new Role(name: 'Administrator')
             adminRole.addToPermissions("*:*:*")
-            adminRole.save(flush:true, failOnError:true)
+            adminRole.save(flush: true, failOnError: true)
 
             println("The Admin role '${adminRole}' has been created")
 
@@ -39,20 +39,20 @@ class BootStrap {
             println("The User role '${userRole}' has been created")
 
             User adminUser = new User(
-                    username:'adminUser',
-                    firstName:'admin',
-                    lastName:'admin',
-                    email:'foo@bar.com',
-                    name:'admin',
-                    urlTitle:'admin_admin',
-                    password:'password',
-                    confirm:'password',
-                    confirmed:true
+                    username: 'adminUser',
+                    firstName: 'admin',
+                    lastName: 'admin',
+                    email: 'foo@bar.com',
+                    name: 'admin',
+                    urlTitle: 'admin_admin',
+                    password: 'password',
+                    confirm: 'password',
+                    confirmed: true
             )
 
             securityService.saltAndHashUser('password', adminUser)
 
-            adminUser.save(flush:true, failOnError:true)
+            adminUser.save(flush: true, failOnError: true)
 
             UserRoleAssociation.create(adminUser, adminRole)
 

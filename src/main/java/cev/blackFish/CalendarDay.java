@@ -3,10 +3,11 @@ package cev.blackFish;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import cev.blackFish.*;
 
 /**
- *  A simple value object that represents a single day 'grid square' in our calendar table.
+ * A simple value object that represents a single day 'grid square' in our calendar table.
  */
 public class CalendarDay {
     

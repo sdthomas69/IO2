@@ -3,34 +3,34 @@ package cev.blackFish
 import org.apache.commons.lang.builder.HashCodeBuilder
 
 class StoryAssociation implements Serializable {
-    
+
     Story story
     Story otherStory
 
     static mapping = {
-        table 'story_stories' 
-        version false 
-        otherStory column:'stories__id'
+        table 'story_stories'
+        version false
+        otherStory column: 'stories__id'
         id composite: ['story', 'otherStory']
         cache true
         datasources(['DEFAULT', 'lookup'])
     }
-	
-	static boolean exists(Story story, Story otherStory) {
-		
-		StoryAssociation storyAssociation = StoryAssociation.findByStoryAndOtherStory(story, otherStory)
-		if(storyAssociation) return true
-		return false
-	}
-    
+
+    static boolean exists(Story story, Story otherStory) {
+
+        StoryAssociation storyAssociation = StoryAssociation.findByStoryAndOtherStory(story, otherStory)
+        if (storyAssociation) return true
+        return false
+    }
+
     static StoryAssociation create(Story story, Story otherStory) {
-		
+
         StoryAssociation storyAssociation = new StoryAssociation(story: story, otherStory: otherStory)
-        storyAssociation.save(flush:true)
-		
-		StoryAssociation otherAssociation = new StoryAssociation(story: otherStory, otherStory: story)
-		otherAssociation.save(flush:true)
-		
+        storyAssociation.save(flush: true)
+
+        StoryAssociation otherAssociation = new StoryAssociation(story: otherStory, otherStory: story)
+        otherAssociation.save(flush: true)
+
         return storyAssociation
     }
 
@@ -53,16 +53,16 @@ class StoryAssociation implements Serializable {
         executeUpdate("DELETE FROM StoryAssociation WHERE story=:story", [story: story])
         executeUpdate("DELETE FROM StoryAssociation WHERE otherStory=:story", [story: story])
     }
-	
-	boolean equals(other) {
-		
-		if (!(other instanceof StoryAssociation)) {
-		   return false
-		}
-		return other.story.id == story.id && other.otherStory.id == otherStory.id
-	}
-	
-	/*int hashCode() {
-		return new HashCodeBuilder().append(story.id).append(otherStory.id).toHashCode()
-	}*/
+
+    boolean equals(other) {
+
+        if (!(other instanceof StoryAssociation)) {
+            return false
+        }
+        return other.story.id == story.id && other.otherStory.id == otherStory.id
+    }
+
+    /*int hashCode() {
+        return new HashCodeBuilder().append(story.id).append(otherStory.id).toHashCode()
+    }*/
 }

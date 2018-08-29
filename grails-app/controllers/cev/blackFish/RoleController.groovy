@@ -17,7 +17,7 @@ class RoleController {
     def show(Role roleInstance) {
         println "role is ${roleInstance}"
         //respond roleInstance
-        [roleInstance:roleInstance]
+        [roleInstance: roleInstance]
     }
 
     def create() {
@@ -34,11 +34,11 @@ class RoleController {
         }
 
         if (roleInstance.hasErrors()) {
-            respond roleInstance.errors, view:'create'
+            respond roleInstance.errors, view: 'create'
             return
         }
 
-        roleInstance.save flush:true
+        roleInstance.save flush: true
 
         request.withFormat {
             form multipartForm {
@@ -63,34 +63,34 @@ class RoleController {
         }
 
         if (roleInstance.hasErrors()) {
-            respond roleInstance.errors, view:'edit'
+            respond roleInstance.errors, view: 'edit'
             return
         }
 
-        roleInstance.save flush:true
+        roleInstance.save flush: true
 
-        if(params.list('permissionsToRemove')) {
+        if (params.list('permissionsToRemove')) {
 
             Boolean foundOne = false
             List existingPerms = []
             existingPerms.addAll(roleInstance.permissions)
 
-            for(ptr in params.list('permissionsToRemove')) {
-                for(perm in existingPerms) {
-                    if(perm == ptr) {
+            for (ptr in params.list('permissionsToRemove')) {
+                for (perm in existingPerms) {
+                    if (perm == ptr) {
                         roleInstance.removeFromPermissions(ptr)
                         foundOne = true
                     }
                 }
             }
-            if(foundOne) {
-                roleInstance.save(flush:true)
+            if (foundOne) {
+                roleInstance.save(flush: true)
             }
         }
 
-        if(params.newPermission) {
+        if (params.newPermission) {
             roleInstance.addToPermissions(params.newPermission)
-            roleInstance.save(flush:true)
+            roleInstance.save(flush: true)
         }
 
         request.withFormat {
@@ -98,7 +98,7 @@ class RoleController {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Role.label', default: 'Role'), roleInstance.id])
                 redirect roleInstance
             }
-            '*'{ respond roleInstance, [status: OK] }
+            '*' { respond roleInstance, [status: OK] }
         }
     }
 
@@ -110,14 +110,14 @@ class RoleController {
             return
         }
 
-        roleInstance.delete flush:true
+        roleInstance.delete flush: true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'Role.label', default: 'Role'), roleInstance.id])
-                redirect action:"index", method:"GET"
+                redirect action: "index", method: "GET"
             }
-            '*'{ render status: NO_CONTENT }
+            '*' { render status: NO_CONTENT }
         }
     }
 
@@ -127,7 +127,7 @@ class RoleController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'role.label', default: 'Role'), params.id])
                 redirect action: "index", method: "GET"
             }
-            '*'{ render status: NOT_FOUND }
+            '*' { render status: NOT_FOUND }
         }
     }
 }

@@ -8,10 +8,9 @@ import cev.blackFish.*;
 /**
  * A model, view helper, that represents a single month. It creates a sample grid, where each day can hold a series of
  * Events. It is designed to simplify the view's job to display a table of events.
- *
  */
 public class CalendarModel {
-    
+
     private Date date;
     private List<ArrayList<CalendarDay>> rows = new ArrayList<ArrayList<CalendarDay>>();
     protected int month;
@@ -22,9 +21,9 @@ public class CalendarModel {
     private Integer previousYear;
     private Integer currentMonth;
     private Integer currentYear;
-    
+
     public CalendarModel() {
-        
+
     }
 
     /**
@@ -88,6 +87,7 @@ public class CalendarModel {
 
     /**
      * Sorts a list of Events into their proper days.
+     *
      * @param events
      */
     /*public void setEvents(List<Story> events) {
@@ -104,69 +104,70 @@ public class CalendarModel {
             day.addEvent(ev);
         }
     }*/
-    
     protected void initNavigationDates() {
-        
-        Calendar next = DateUtils.createCalendarMonth(month + 1, 1, this.year); 
+
+        Calendar next = DateUtils.createCalendarMonth(month + 1, 1, this.year);
         nextMonth = new Integer(next.get(Calendar.MONTH));
         nextYear = new Integer(next.get(Calendar.YEAR));
 
         Calendar previous = DateUtils.createCalendarMonth(month - 1, 1, this.year);
         previousMonth = new Integer(previous.get(Calendar.MONTH));
         previousYear = new Integer(previous.get(Calendar.YEAR));
-        
+
         Calendar current = DateUtils.createCalendarMonth(month, 1, this.year);
         currentMonth = new Integer(current.get(Calendar.MONTH));
         currentYear = new Integer(current.get(Calendar.YEAR));
     }
-    
+
     /**
      * Iterated over by the View.
+     *
      * @return
      */
-    public List<ArrayList<CalendarDay>> getRows() { 
-        return rows; 
+    public List<ArrayList<CalendarDay>> getRows() {
+        return rows;
     }
 
     /**
      * Get row at the given index.
+     *
      * @param rowNumber
      * @return
      */
-    private List<?> getRow(int rowNumber){
+    private List<?> getRow(int rowNumber) {
         return (List<?>) rows.get(rowNumber);
     }
-    
+
     public Integer getCurrentYear() {
         return this.currentYear;
     }
-    
+
     public Integer getCurrentMonth() {
         return this.currentMonth;
     }
-    
+
     public Integer getNextMonth() {
         return this.nextMonth;
     }
-    
+
     public Integer getNextYear() {
         return this.nextYear;
     }
-    
+
     public Integer getPreviousMonth() {
         return this.previousMonth;
     }
-    
+
     public Integer getPreviousYear() {
         return this.previousYear;
     }
-    
-    public Date getDate() { 
-        return date; 
+
+    public Date getDate() {
+        return date;
     }
-    
-    public void setDate(Date date) { 
-        this.date = date; 
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
 

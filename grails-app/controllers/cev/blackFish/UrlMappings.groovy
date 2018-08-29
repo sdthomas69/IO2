@@ -6,7 +6,7 @@ class UrlMappings {
 
         /* File Mappings ****************************************/
 
-        "/presentations"(controller:"file", action:"list")
+        "/presentations"(controller: "file", action: "list")
 
         "/file/$title?" {
             controller = "file"
@@ -14,9 +14,9 @@ class UrlMappings {
             params = "$title"
         }
 
-        "/file/search"(controller:"file", action:"search")
+        "/file/search"(controller: "file", action: "search")
 
-        "/file/list" (controller:"file", action:"list")
+        "/file/list"(controller: "file", action: "list")
 
         "/remoteFileList" {
             controller = "file"
@@ -30,11 +30,11 @@ class UrlMappings {
 
         /* Story Mappings ****************************************/
 
-        "/news" (controller:"story", action:"news")
+        "/news"(controller: "story", action: "news")
 
-        "/people" (controller:"story", action:"people")
+        "/people"(controller: "story", action: "people")
 
-        "/directory"(controller:"user", action:"people")
+        "/directory"(controller: "user", action: "people")
 
         "/story/$title?" {
             controller = "story"
@@ -48,9 +48,9 @@ class UrlMappings {
             params = "$title"
         }
 
-        "/story/search"(controller:"story", action:"search")
+        "/story/search"(controller: "story", action: "search")
 
-        "/story/list" (controller:"story", action:"list")
+        "/story/list"(controller: "story", action: "list")
 
         "/remoteStoryList" {
             controller = "story"
@@ -65,7 +65,7 @@ class UrlMappings {
             params = "$selectedTag"
         }
 
-        "/tag/list" (controller:"tag", action:"list")
+        "/tag/list"(controller: "tag", action: "list")
 
         /* User mappings ****************************************/
 
@@ -75,7 +75,7 @@ class UrlMappings {
             params = "$url"
         }
 
-        "/login" (controller:"userAdmin", action:"login")
+        "/login"(controller: "userAdmin", action: "login")
 
         /* Misc. Mappings ****************************************/
 
@@ -86,7 +86,6 @@ class UrlMappings {
             name = "Home"
         }
 
-
         //"/signUp" (controller:user, action:create)
 
         "/json/videos/$domain?/$id?" {
@@ -94,7 +93,7 @@ class UrlMappings {
             action = "videos"
         }
 
-        "/admin" (controller:"admin", action:"home")
+        "/admin"(controller: "admin", action: "home")
 
         // Added by Errors plugin
         "403"(controller: "errors", action: "error403")
@@ -102,7 +101,7 @@ class UrlMappings {
         "500"(controller: "errors", action: "error500")
 
         //"/$controller/$action?/$id?(.$format)?"{
-        "/$controller/$action?/$id?(.$format)?"{
+        "/$controller/$action?/$id?(.$format)?" {
             constraints {
                 // apply constraints here
             }

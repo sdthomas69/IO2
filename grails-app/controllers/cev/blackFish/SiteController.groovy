@@ -3,6 +3,7 @@ package cev.blackFish
 import static org.springframework.http.HttpStatus.*
 
 import grails.transaction.Transactional
+
 //import grails.plugin.cache.CacheEvict
 //import grails.plugin.cache.CachePut
 
@@ -13,7 +14,7 @@ class SiteController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Site.list(params), model:[siteInstanceCount: Site.count()]
+        respond Site.list(params), model: [siteInstanceCount: Site.count()]
     }
 
     def show(Site siteInstance) {
@@ -24,8 +25,8 @@ class SiteController {
         respond new Site(params)
     }
 
-	//@CachePut(value='siteCache')
-	@Transactional
+    //@CachePut(value='siteCache')
+    @Transactional
     def save(Site siteInstance) {
         if (siteInstance == null) {
             notFound()
@@ -33,20 +34,20 @@ class SiteController {
         }
 
         if (siteInstance.hasErrors()) {
-            respond siteInstance.errors, view:'create'
+            respond siteInstance.errors, view: 'create'
             return
         }
 
-        siteInstance.save flush:true
+        siteInstance.save flush: true
 
         request.withFormat {
             form {
                 flash.message = message(
-					code: 'default.created.message', 
-					args: [message(code: 'siteInstance.label', default: 'Site'), siteInstance.id]
-				)
+                        code: 'default.created.message',
+                        args: [message(code: 'siteInstance.label', default: 'Site'), siteInstance.id]
+                )
                 //redirect siteInstance
-				redirect(action:"show", id:siteInstance.id)
+                redirect(action: "show", id: siteInstance.id)
             }
             '*' { respond siteInstance, [status: CREATED] }
         }
@@ -56,8 +57,8 @@ class SiteController {
         respond siteInstance
     }
 
-	//@CachePut(value='siteCache')
-	@Transactional
+    //@CachePut(value='siteCache')
+    @Transactional
     def update(Site siteInstance) {
         if (siteInstance == null) {
             notFound()
@@ -65,27 +66,27 @@ class SiteController {
         }
 
         if (siteInstance.hasErrors()) {
-            respond siteInstance.errors, view:'edit'
+            respond siteInstance.errors, view: 'edit'
             return
         }
 
-        siteInstance.save flush:true
+        siteInstance.save flush: true
 
         request.withFormat {
             form {
                 flash.message = message(
-					code: 'default.updated.message', 
-					args: [message(code: 'Site.label', default: 'Site'), siteInstance.id]
-				)
+                        code: 'default.updated.message',
+                        args: [message(code: 'Site.label', default: 'Site'), siteInstance.id]
+                )
                 //redirect siteInstance
-				redirect(action:"show", id:siteInstance.id)
+                redirect(action: "show", id: siteInstance.id)
             }
-            '*'{ respond siteInstance, [status: OK] }
+            '*' { respond siteInstance, [status: OK] }
         }
     }
 
-	//@CacheEvict(value='siteCache')
-	@Transactional
+    //@CacheEvict(value='siteCache')
+    @Transactional
     def delete(Site siteInstance) {
 
         if (siteInstance == null) {
@@ -93,17 +94,17 @@ class SiteController {
             return
         }
 
-        siteInstance.delete flush:true
+        siteInstance.delete flush: true
 
         request.withFormat {
             form {
                 flash.message = message(
-					code: 'default.deleted.message', 
-					args: [message(code: 'Site.label', default: 'Site'), siteInstance.id]
-				)
-                redirect action:"index", method:"GET"
+                        code: 'default.deleted.message',
+                        args: [message(code: 'Site.label', default: 'Site'), siteInstance.id]
+                )
+                redirect action: "index", method: "GET"
             }
-            '*'{ render status: NO_CONTENT }
+            '*' { render status: NO_CONTENT }
         }
     }
 
@@ -111,12 +112,12 @@ class SiteController {
         request.withFormat {
             form {
                 flash.message = message(
-					code: 'default.not.found.message', 
-					args: [message(code: 'siteInstance.label', default: 'Site'), params.id]
-				)
+                        code: 'default.not.found.message',
+                        args: [message(code: 'siteInstance.label', default: 'Site'), params.id]
+                )
                 redirect action: "index", method: "GET"
             }
-            '*'{ render status: NOT_FOUND }
+            '*' { render status: NOT_FOUND }
         }
     }
 }

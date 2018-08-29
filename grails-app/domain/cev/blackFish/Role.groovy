@@ -1,24 +1,24 @@
 package cev.blackFish
 
 class Role {
-    
-    String name
-	
-	Set<User> users
 
-    static hasMany = [permissions: String ]
-    
+    String name
+
+    Set<User> users
+
+    static hasMany = [permissions: String]
+
     //static belongsTo = User
 
     static constraints = {
         name(nullable: false, blank: false, unique: true)
     }
-    
+
     static mapping = {
-        id generator:'sequence', params:[sequence:'role_seq']
+        id generator: 'sequence', params: [sequence: 'role_seq']
         cache true
-		users cache:true
-        permissions cache:true
+        users cache: true
+        permissions cache: true
         datasources(['DEFAULT', 'lookup'])
     }
 

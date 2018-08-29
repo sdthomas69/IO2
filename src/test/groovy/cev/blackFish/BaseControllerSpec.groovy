@@ -17,7 +17,7 @@ import spock.lang.*
 class BaseControllerSpec extends Specification {
 
     //returns false because the platform is currently mac, not iphone, ipod, or ipad
-    def "test the isIOS method"(){
+    def "test the isIOS method"() {
 
         when: "the isIOS method is called"
 
@@ -29,9 +29,9 @@ class BaseControllerSpec extends Specification {
 
     }
 
-    def "test the optimisticLock method"(){
+    def "test the optimisticLock method"() {
 
-        Story story = new Story(title:"title", description:"description").save(validate:false)
+        Story story = new Story(title: "title", description: "description").save(validate: false)
 
         when: "the optimisticLock method is called"
 
@@ -47,17 +47,17 @@ class BaseControllerSpec extends Specification {
 
     }
 
-    def "test the writeObjects method"(){
+    def "test the writeObjects method"() {
 
-        File file = new File(title:"title", description:"description").save(validate:false)
+        File file = new File(title: "title", description: "description").save(validate: false)
 
-        Story story = new Story(title:"title1", description:"description1").save(validate:false)
+        Story story = new Story(title: "title1", description: "description1").save(validate: false)
 
-        when:"writeObjects is called with a nonexistant filesystem path"
+        when: "writeObjects is called with a nonexistant filesystem path"
 
         def model = controller.writeObject(story, file)
 
-        then:"uri will be returned as an empty string"
+        then: "uri will be returned as an empty string"
 
         assert model == ""
 
@@ -66,7 +66,7 @@ class BaseControllerSpec extends Specification {
 
     def "test the setTextProperties"() {
 
-        Story story = new Story(title:"title", description:"description").save(validate:false)
+        Story story = new Story(title: "title", description: "description").save(validate: false)
 
         when: "the short description is empty"
 
@@ -86,7 +86,6 @@ class BaseControllerSpec extends Specification {
 
     }
 
-
     //false, because we are currently in the testing environment
     void "test the isDevelopment method"() {
 
@@ -101,12 +100,11 @@ class BaseControllerSpec extends Specification {
     }
 
 
-
-    void "test the checkVersion method"(){
+    void "test the checkVersion method"() {
 
         when: "params version is not already set"
 
-        Tag tag1 = new Tag(title:"test tag").save(validate:false)
+        Tag tag1 = new Tag(title: "test tag").save(validate: false)
 
         tag1.version = 1
 
@@ -118,7 +116,7 @@ class BaseControllerSpec extends Specification {
 
         when: "params version is set and the object version > the params version"
 
-        Tag tag2 = new Tag(title:"test tag").save(validate:false)
+        Tag tag2 = new Tag(title: "test tag").save(validate: false)
 
         params['version'] = '0'
 
@@ -132,11 +130,11 @@ class BaseControllerSpec extends Specification {
 
         when: "params version is set and the object version is < the params version"
 
-        Tag tag3 = new Tag(title:"test tag").save(validate:false)
+        Tag tag3 = new Tag(title: "test tag").save(validate: false)
 
-        params['version']='1'
+        params['version'] = '1'
 
-        tag3.version= 0
+        tag3.version = 0
 
         def model3 = controller.checkVersion(tag3)
 
@@ -151,9 +149,9 @@ class BaseControllerSpec extends Specification {
 
         when: "a tag has a Quicktime video in its files collection"
 
-        Tag tag1 = new Tag(title:"test tag").save(validate:false)
+        Tag tag1 = new Tag(title: "test tag").save(validate: false)
 
-        File file1 = new File(title:"test file", description:"test", type:"Quicktime").save(validate:false)
+        File file1 = new File(title: "test file", description: "test", type: "Quicktime").save(validate: false)
 
         tag1.addToFiles(file1)
 
@@ -163,9 +161,9 @@ class BaseControllerSpec extends Specification {
 
         when: "a tag has a non-Quicktime video in its files collection"
 
-        Tag tag2 = new Tag(title:"test tag").save(validate:false)
+        Tag tag2 = new Tag(title: "test tag").save(validate: false)
 
-        File file2 = new File(title:"test file", description:"test", type:"VLC").save(validate:false)
+        File file2 = new File(title: "test file", description: "test", type: "VLC").save(validate: false)
 
         tag2.addToFiles(file2)
 
@@ -175,7 +173,7 @@ class BaseControllerSpec extends Specification {
 
         when: "a tag does not contain any type of video in its file collection"
 
-        Tag tag3 = new Tag(title:"test tag").save(validate:false)
+        Tag tag3 = new Tag(title: "test tag").save(validate: false)
 
         then: "has videos will return false"
 
@@ -184,15 +182,15 @@ class BaseControllerSpec extends Specification {
 
     void "Test the isNumeric method"() {
 
-        when:"A numbered String is passed in"
+        when: "A numbered String is passed in"
 
-        then:"The method returns true"
+        then: "The method returns true"
 
         controller.isNumeric("23") == true
 
-        when:"A non-numeric string is passed in"
+        when: "A non-numeric string is passed in"
 
-        then:"The method returns false"
+        then: "The method returns false"
 
         controller.isNumeric("foo") == false
     }
@@ -320,7 +318,7 @@ class BaseControllerSpec extends Specification {
     }
 
 
-    void "test the buildQuery method"(){
+    void "test the buildQuery method"() {
 
     }
 }

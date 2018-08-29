@@ -2,8 +2,8 @@ package cev.blackFish
 
 class AdminController {
 
-    def home() { 
+    def home() {
         //println("site is " + session.site)
-		render(view:'/admin')
-	}
+        render(view: '/admin')
+    }
 }

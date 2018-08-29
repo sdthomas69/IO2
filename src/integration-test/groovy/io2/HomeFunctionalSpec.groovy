@@ -20,10 +20,10 @@ class HomeFunctionalSpec extends GebSpec {
     }
 
     void "test the home page title"() {
-        when:"The home page is visited"
-            go '/'
+        when: "The home page is visited"
+        go '/'
 
-        then:"The title is correct"
-        	title == "Interactive Oceans"
+        then: "The title is correct"
+        title == "Interactive Oceans"
     }
 }
